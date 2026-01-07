@@ -11,4 +11,4 @@ def render_head():
         }
     )
 
-    st.title("Build An Options Strategy")
+    st.header('Build Options Trading Strategy')

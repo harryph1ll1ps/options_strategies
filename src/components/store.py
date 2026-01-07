@@ -7,8 +7,11 @@ def configure_store():
     if 'legs' not in st.session_state:
         st.session_state.legs = [{'option_type': 'call', 
                                   'direction': 'long', 
-                                  'strike': 100, 
+                                  'strike': 500, 
                                   'premium': 1}]
+        
+    if 'asset_price' not in st.session_state:
+        st.session_state.asset_price = 500.0
         
     # hide the payoff diagram section by default
     if 'show_payoff_diagram' not in st.session_state:
