@@ -10,6 +10,10 @@ from src.utils.math import calculate_leg_return
 # Put the spot price slider below
 
 
+
+  
+
+
 def generate_chart_lines(legs: list[dict], min_price: int, max_price: int):
     spot_prices = np.arange(min_price, max_price + 1)
 
@@ -60,8 +64,23 @@ def render_payoff_diagram():
     def _show_payoff_diagram():
         st.session_state.show_payoff_diagram = True
 
+    def _get_intervals():
+        strike_total = 0
+        for leg in st.session_state.legs:
+            strike = leg["strike"]
+            strike_total += strike
+        
+        avg = strike_total / len(st.session_state.legs)
+
+        upper = int(avg * 1.05)
+        lower = int(avg * 0.95)
+
+        return lower, upper
+
     st.markdown('### More Tools')
     st.button("Payoff Diagram", on_click=_show_payoff_diagram, icon="📈", key="payoff_diagram_button")
+
+    lower, upper = _get_intervals()
 
     if st.session_state.show_payoff_diagram:
         col1, col2 = st.columns(2)
@@ -69,7 +88,7 @@ def render_payoff_diagram():
         with col1:
             st.session_state.min_spot_price = st.number_input(
                 "Min Spot Price", 
-                value = st.session_state.min_spot_price,
+                value = lower,
                 key=f"min_spot_price_input",
                 min_value=0,
                 max_value=10000
@@ -78,7 +97,7 @@ def render_payoff_diagram():
         with col2:
             st.session_state.max_spot_price = st.number_input(
                 "Max Spot Price", 
-                value = st.session_state.max_spot_price,
+                value = upper,
                 key=f"max_spot_price_input",
                 min_value=0,
                 max_value=10000
