@@ -2,14 +2,14 @@ import streamlit as st
 
 def render_legs():
     """ Render Option Leg Inputs """
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns([0.3,0.3,0.2,0.2])
 
     for i, leg in enumerate(st.session_state['legs']):
         with col1:
             st.session_state['legs'][i]['option_type'] = st.selectbox(
                 f"Option Type {i+1}", 
-                ["Call","Put"], 
-                index = 0 if leg['option_type'] == "Call" else 1,
+                ["Call","Put"],
+                index = 1 if leg['option_type'] == "Put" else 0,
                 key=f"option_type_{i}"
                 )
             
@@ -17,7 +17,7 @@ def render_legs():
             st.session_state['legs'][i]['direction'] = st.selectbox(
                 "Direction", 
                 ["Long","Short"], 
-                index = 0 if leg['direction'] == "Call" else 1,
+                index = 1 if leg['direction'] == "Short" else 0,
                 key=f"option_direction_{i}"
                 )
 

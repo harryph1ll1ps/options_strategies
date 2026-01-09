@@ -6,3 +6,5 @@ def render_payoff():
 
     st.markdown(f'**At an underlying price of** `{st.session_state.asset_price}` **gross payoff is** `{payoff}`')
     st.markdown(f'**At an underlying price of** `{st.session_state.asset_price}` **net payoff is** `{net_payoff}`')
+
+    st.markdown("---")
