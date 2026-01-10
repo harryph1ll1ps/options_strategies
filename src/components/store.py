@@ -23,9 +23,6 @@ def configure_store():
     if 'max_spot_price' not in st.session_state:
         st.session_state.max_spot_price = 1000
 
-    if 'spot_price_step' not in st.session_state:
-        st.session_state.spot_price_step = 1
-
     # hide the AI summary section by default
     if 'show_ai_summary' not in st.session_state:
         st.session_state.show_ai_summary = False

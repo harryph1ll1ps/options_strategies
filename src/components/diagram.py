@@ -4,15 +4,6 @@ import matplotlib.pyplot as plt
 from src.utils.math import calculate_leg_return
 
 
-# DO SOME MORE WORK TO GET A REASONABLE MIN MAX AND STEP AUTOMATICALLY
-# E.G +/- 5 pct of avg strike price
-# PAYOFF DIAGRAM SHOULD BE THE MAIN FEATURE
-# Put the spot price slider below
-
-
-
-  
-
 
 def generate_chart_lines(legs: list[dict], min_price: int, max_price: int):
     spot_prices = np.arange(min_price, max_price + 1)
@@ -45,7 +36,6 @@ def create_diagram(spot_prices, all_leg_returns):
             label=f"Leg {i + 1}",
         )
 
-
     # Zero line
     ax.axhline(0)
     ax.set_xlabel("Underlying Price at Expiry")
@@ -57,12 +47,13 @@ def create_diagram(spot_prices, all_leg_returns):
 
 
 
-
-
 def render_payoff_diagram():
 
     def _show_payoff_diagram():
         st.session_state.show_payoff_diagram = True
+
+    def _hide_payoff_diagram():
+        st.session_state.show_payoff_diagram = False
 
     def _get_intervals():
         strike_total = 0
@@ -72,18 +63,23 @@ def render_payoff_diagram():
         
         avg = strike_total / len(st.session_state.legs)
 
-        upper = int(avg * 1.05)
-        lower = int(avg * 0.95)
+        upper = int(avg * 1.1)
+        lower = int(avg * 0.9)
 
         return lower, upper
 
-    st.markdown('### More Tools')
-    st.button("Payoff Diagram", on_click=_show_payoff_diagram, icon="📈", key="payoff_diagram_button")
+    st.markdown('')
 
-    lower, upper = _get_intervals()
+    if not st.session_state.show_payoff_diagram:
+        st.button("Show Chart", on_click=_show_payoff_diagram, icon="📈", key="payoff_diagram_button")
+
 
     if st.session_state.show_payoff_diagram:
+
+        st.button("Close Chart", on_click=_hide_payoff_diagram, icon="❌", key="payoff_diagram_exit_button")
         col1, col2 = st.columns(2)
+
+        lower, upper = _get_intervals()
 
         with col1:
             st.session_state.min_spot_price = st.number_input(
@@ -103,20 +99,10 @@ def render_payoff_diagram():
                 max_value=10000
                 )     
 
-        # with col3:
-        #     st.session_state.spot_price_step = st.number_input(
-        #         "Intervals", 
-        #         value = st.session_state.spot_price_step,
-        #         key=f"spot_price_step_input",
-        #         min_value=0,
-        #         max_value=500
-        #         )    
-
         spot_prices, lines = generate_chart_lines(
             legs=st.session_state.legs,
             min_price=st.session_state.min_spot_price,
             max_price=st.session_state.max_spot_price,
-            # step=st.session_state.spot_price_step,
         )
 
         create_diagram(spot_prices, lines)
