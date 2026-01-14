@@ -45,6 +45,7 @@ def render_ai_summary():
         - Highlight key risks (e.g. directional risk, volatility risk, assignment risk)
         - Mention any important assumptions you are making
         - Be succinct, logical, and clear
+        - Return the response as markdown
 
         Option legs:
         {trade_context}

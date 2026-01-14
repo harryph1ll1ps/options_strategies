@@ -36,6 +36,17 @@ def create_diagram(spot_prices, all_leg_returns):
             label=f"Leg {i + 1}",
         )
 
+    # Plot the aggregate (strategy) return
+    strategy_returns = np.sum(all_leg_returns, axis=0)
+
+    ax.plot(
+        spot_prices,
+        strategy_returns,
+        color="black",
+        linewidth=3,
+        label="Strategy",
+    )
+
     # Zero line
     ax.axhline(0)
     ax.set_xlabel("Underlying Price at Expiry")
