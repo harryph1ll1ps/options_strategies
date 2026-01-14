@@ -1,5 +1,5 @@
 import streamlit as st
-from src.utils.math import calculate_legs_return
+from src.utils.calculation import calculate_legs_return
 
 
 def render_slider():

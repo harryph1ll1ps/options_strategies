@@ -1,13 +1,24 @@
-from google import genai
-from src.components.summary import build_context
+import os
+from dotenv import load_dotenv
+import google.genai as genai
 
-trade_context = build_context()
+load_dotenv()  # used to get API key
 
-client = genai.Client()
+def call_gemini(content: str):
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-response = client.models.generate_content(
-    model="gemini-3-flash-preview",
-    contents=f"Summarise the following trade for me. Highlight the main upside and downside. What are the key concerns? Does this trade have a name? {trade_context}",
-)
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=content,
+        # config=genai.types.GenerateContentConfig(
+        #     temperature=0.2,
+        #     top_p=0.9,
+        #     max_output_tokens=600,
+        # ),
+    )
 
-print(response.text)
+    return response.text
+
+
+# if __name__ == "__main__":
+#     print(call_gemini("what is hello world?"))
