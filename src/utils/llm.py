@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
 import google.genai as genai
+import requests
+import json
 
 load_dotenv()  # used to get API key
 
@@ -20,5 +22,46 @@ def call_gemini(content: str):
     return response.text
 
 
-# if __name__ == "__main__":
-#     print(call_gemini("what is hello world?"))
+def call_openrouter(content: str):
+    response = requests.post(
+    url="https://openrouter.ai/api/v1/chat/completions",
+    headers={
+        "Authorization": f"Bearer {os.getenv('OPENROUTER_API_KEY')}",
+        "Content-Type": "application/json",
+    },
+    data=json.dumps({
+        "model": "tngtech/deepseek-r1t2-chimera:free",
+        "messages": [
+        {
+            "role": "user",
+            "content": f"{content}"
+        }
+        ]
+    })
+    )
+
+    return response.json()["choices"][0]["message"]["content"]
+
+
+if __name__ == "__main__":
+    context = f"""
+    You are an experienced options trader and risk analyst.
+
+    Given the following option legs, analyse the overall strategy as a single trade.
+
+    For your response:
+    - Start with a 1-2 sentence plain-English summary of the trade
+    - Identify the strategy name if applicable (e.g. spread, straddle, condor)
+    - Describe the **maximum upside** and **maximum downside**
+    - Explain how the trade makes money and how it loses money
+    - Highlight key risks (e.g. directional risk, volatility risk, assignment risk)
+    - Mention any important assumptions you are making
+    - Be succinct, logical, and clear
+    - Return the response as markdown
+
+    Option legs:
+    Long call at strike price 100 with a premium of 10
+    Short call at a strike price 150 with a premium of 5
+    """.strip()
+
+    print(call_openrouter(context))

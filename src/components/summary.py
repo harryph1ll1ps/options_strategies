@@ -1,5 +1,5 @@
 import streamlit as st
-from src.utils.llm import call_gemini
+from src.utils.llm import call_gemini, call_openrouter
 
 def build_context():
     """ Build the trade context to pass into LLM"""
@@ -25,12 +25,18 @@ def render_ai_summary():
     def _show_ai_summary():
         st.session_state.show_ai_summary = True
 
+    def _hide_ai_summary():
+        st.session_state.show_ai_summary = False
+
     st.markdown('---')
     st.markdown('### More Tools')
 
-    st.button("AI Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
+    if not st.session_state.show_ai_summary:
+        st.button("AI Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
 
-    if st.session_state.show_ai_summary == True:
+    if st.session_state.show_ai_summary:
+        st.button("Close Summary", on_click=_hide_ai_summary, icon="❌", key="ai_summary_exit_button")
+
         trade_context = build_context()
         context = f"""
         You are an experienced options trader and risk analyst.
@@ -51,7 +57,7 @@ def render_ai_summary():
         {trade_context}
         """.strip()
 
-        response = call_gemini(context)
+        response = call_openrouter(context)
 
         st.markdown(response)
 
