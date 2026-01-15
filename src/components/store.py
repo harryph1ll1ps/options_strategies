@@ -27,4 +27,8 @@ def configure_store():
     if 'show_ai_summary' not in st.session_state:
         st.session_state.show_ai_summary = False
 
+    if 'previous_ai_summary' not in st.session_state:
+        st.session_state.previous_ai_summary = False
     
+    if 'refresh_ai_summary' not in st.session_state:
+        st.session_state.refresh_ai_summary = False

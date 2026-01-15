@@ -44,6 +44,8 @@ def call_openrouter(content: str):
 
 
 if __name__ == "__main__":
+    #print(os.getenv("OPENROUTER_API_KEY"))
+
     context = f"""
     You are an experienced options trader and risk analyst.
 

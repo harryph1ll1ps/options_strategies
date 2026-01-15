@@ -110,10 +110,11 @@ def render_payoff_diagram():
                 max_value=10000
                 )     
 
-        spot_prices, lines = generate_chart_lines(
-            legs=st.session_state.legs,
-            min_price=st.session_state.min_spot_price,
-            max_price=st.session_state.max_spot_price,
-        )
+        with st.spinner('loading data...'):
+            spot_prices, lines = generate_chart_lines(
+                legs=st.session_state.legs,
+                min_price=st.session_state.min_spot_price,
+                max_price=st.session_state.max_spot_price,
+            )
 
-        create_diagram(spot_prices, lines)
+            create_diagram(spot_prices, lines)

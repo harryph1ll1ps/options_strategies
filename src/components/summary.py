@@ -1,5 +1,6 @@
 import streamlit as st
 from src.utils.llm import call_gemini, call_openrouter
+import time
 
 def build_context():
     """ Build the trade context to pass into LLM"""
@@ -27,39 +28,53 @@ def render_ai_summary():
 
     def _hide_ai_summary():
         st.session_state.show_ai_summary = False
+        st.session_state.previous_ai_summary = False
+
+    def _refresh_ai_summary():
+        st.session_state.refresh_ai_summary = True
 
     st.markdown('---')
     st.markdown('### More Tools')
 
-    if not st.session_state.show_ai_summary:
-        st.button("AI Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
-
     if st.session_state.show_ai_summary:
         st.button("Close Summary", on_click=_hide_ai_summary, icon="❌", key="ai_summary_exit_button")
+        st.button("Refresh Summary", on_click=_refresh_ai_summary, icon="🔄", key="ai_summary_refresh_button")
 
-        trade_context = build_context()
-        context = f"""
-        You are an experienced options trader and risk analyst.
+    else:
+        st.button("AI Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
 
-        Given the following option legs, analyse the overall strategy as a single trade.
 
-        For your response:
-        - Start with a 1-2 sentence plain-English summary of the trade
-        - Identify the strategy name if applicable (e.g. spread, straddle, condor)
-        - Describe the **maximum upside** and **maximum downside**
-        - Explain how the trade makes money and how it loses money
-        - Highlight key risks (e.g. directional risk, volatility risk, assignment risk)
-        - Mention any important assumptions you are making
-        - Be succinct, logical, and clear
-        - Return the response as markdown
+    if st.session_state.show_ai_summary and ((not st.session_state.previous_ai_summary) or st.session_state.refresh_ai_summary):
+        with st.spinner('loading data...'):
+            trade_context = build_context()
+            context = f"""
+            You are an experienced options trader and risk analyst.
 
-        Option legs:
-        {trade_context}
-        """.strip()
+            Given the following option legs, analyse the overall strategy as a single trade.
 
-        response = call_openrouter(context)
+            For your response:
+            - Start with a 1-2 sentence plain-English summary of the trade
+            - Identify the strategy name if applicable (e.g. spread, straddle, condor)
+            - Describe the **maximum upside** and **maximum downside**
+            - Explain how the trade makes money and how it loses money
+            - Highlight key risks (e.g. directional risk, volatility risk, assignment risk)
+            - Mention any important assumptions you are making
+            - Be succinct, logical, and clear
+            - Return the response as markdown
 
-        st.markdown(response)
+            Option legs:
+            {trade_context}
+            """.strip()
+
+            response = call_openrouter(context)
+            st.session_state.previous_ai_summary = response
+            st.session_state.refresh_ai_summary = False
+            st.markdown(response)
+
+
+    elif st.session_state.show_ai_summary and st.session_state.previous_ai_summary:
+        st.markdown(st.session_state.previous_ai_summary)
+
 
 
         
