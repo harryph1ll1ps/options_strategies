@@ -8,9 +8,12 @@ __pycache__/
 
 # Virtual environments
 venv/
-.env/
-.env.local
 env/
+
+# Environment variables
+.env
+.env.*
+.env.local
 
 # Streamlit
 .streamlit/
@@ -26,6 +29,6 @@ Thumbs.db
 # Logs
 *.log
 
-# Uploaded files / temp data
+# Temp / uploads
+tmp/
 uploads/
-tmp/.env
