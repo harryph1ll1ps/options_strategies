@@ -33,5 +33,5 @@ def render_slider():
     # display gross + net payoff
     payoff, net_payoff = calculate_legs_return(st.session_state.legs, st.session_state.spot_price)
 
-    st.markdown(f'**At an underlying price of** `{st.session_state.spot_price}` **gross payoff is** `{payoff}`')
-    st.markdown(f'**At an underlying price of** `{st.session_state.spot_price}` **net payoff is** `{net_payoff}`')
+    st.markdown(f'**At a spot price of** `{st.session_state.spot_price}` ***gross payoff*** **at expiry is** `{payoff}`')
+    st.markdown(f'**At a spot price of** `{st.session_state.spot_price}` ***net payoff*** **at expiry is** `{net_payoff}`')
