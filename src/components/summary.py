@@ -37,8 +37,11 @@ def render_ai_summary():
     st.markdown('### More Tools')
 
     if st.session_state.show_ai_summary:
-        st.button("Close Summary", on_click=_hide_ai_summary, icon="❌", key="ai_summary_exit_button")
-        st.button("Refresh Summary", on_click=_refresh_ai_summary, icon="🔄", key="ai_summary_refresh_button")
+        col1, col2 = st.columns([0.25,0.75])
+        with col1:
+            st.button("Close Summary", on_click=_hide_ai_summary, icon="❌", key="ai_summary_exit_button")
+        with col2:
+            st.button("Refresh Summary", on_click=_refresh_ai_summary, icon="🔄", key="ai_summary_refresh_button")
 
     else:
         st.button("AI Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
@@ -77,5 +80,43 @@ def render_ai_summary():
 
 
 
-        
+
+
+
+You are a professional options trader and risk analyst.
+
+Analyse the following option legs as a single, unified strategy, not as individual trades.
+
+Output requirements:
+
+Write in a professional but accessible tone, suitable for an informed retail or institutional trader
+
+Be concise, high-level, and conceptual rather than numerically precise
+
+Do not over-focus on exact strike prices or premiums; use them only to infer structure and payoff
+
+Avoid unnecessary jargon or edge-case details
+
+Structure your response exactly as follows (markdown, bold section headers):
+
+Strategy Name:
+Identify the commonly accepted strategy name (e.g. vertical spread, straddle, condor). If none clearly applies, write “N/A”.
+
+Summary:
+One plain-English sentence explaining what the trade is trying to achieve and the market view it expresses.
+
+Economics:
+Explain how the trade makes money and how it loses money in general terms, including payoff shape and where gains or losses are capped.
+
+Risks:
+Describe the primary risks (e.g. directional risk, time decay, capped upside, volatility changes), focusing on what could go wrong.
+
+Assumptions:
+State the key assumptions required for the trade thesis to hold (e.g. price movement, volatility behaviour, liquidity, early exercise considerations).
+
+Option legs:
+List the option legs exactly as provided, without reinterpretation.
+
+Here are the option legs to analyse:
+{trade_context}
 

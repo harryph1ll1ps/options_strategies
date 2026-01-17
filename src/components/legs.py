@@ -36,6 +36,6 @@ def render_legs():
                 value = leg["premium"],
                 key=f"premium_{i}",
                 min_value=0,
-                max_value=1000
+                max_value=10000
                 )
 

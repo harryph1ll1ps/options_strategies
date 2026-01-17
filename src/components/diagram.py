@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from src.utils.calculation import calculate_leg_return
+import math
 
 
 
@@ -66,18 +67,27 @@ def render_payoff_diagram():
     def _hide_payoff_diagram():
         st.session_state.show_payoff_diagram = False
 
-    def _get_intervals():
-        strike_total = 0
-        for leg in st.session_state.legs:
-            strike = leg["strike"]
-            strike_total += strike
+    # def _show_payoff_range():
+    #     st.session_state.show_payoff_range = True
+
+    # def _get_intervals():
+    #     strike_total = 0
+    #     max_strike = 0
+    #     min_strike = math.inf
+    #     for leg in st.session_state.legs:
+    #         strike = leg["strike"]
+    #         max_strike = max(max_strike, strike)
+    #         min_strike = min(min_strike, strike)
         
-        avg = strike_total / len(st.session_state.legs)
+    #     upper = max_strike * 1.20
+    #     lower = min_strike * 0.80
 
-        upper = int(avg * 1.1)
-        lower = int(avg * 0.9)
+        
+    #     # avg = strike_total / len(st.session_state.legs)
+    #     # upper = int(avg * 1.1)
+    #     # lower = int(avg * 0.9)
 
-        return lower, upper
+    #     return lower, upper
 
     st.markdown('')
 
@@ -87,28 +97,34 @@ def render_payoff_diagram():
 
     if st.session_state.show_payoff_diagram:
 
+
         st.button("Close Chart", on_click=_hide_payoff_diagram, icon="❌", key="payoff_diagram_exit_button")
-        col1, col2 = st.columns(2)
 
-        lower, upper = _get_intervals()
+        # with col2:
+        #     st.button("Adjust Chart", on_click=_show_payoff_range, icon="🔩", key="payoff_diagram_range_button")
 
-        with col1:
-            st.session_state.min_spot_price = st.number_input(
-                "Min Spot Price", 
-                value = lower,
-                key=f"min_spot_price_input",
-                min_value=0,
-                max_value=10000
-                )            
+
+        #col1, col2 = st.columns(2)
+
+        # lower, upper = _get_intervals()
+
+        # with col1:
+        #     st.session_state.min_spot_price = st.number_input(
+        #         "Min Spot Price", 
+        #         value = lower,
+        #         key=f"min_spot_price_input",
+        #         min_value=0,
+        #         max_value=10000
+        #         )            
         
-        with col2:
-            st.session_state.max_spot_price = st.number_input(
-                "Max Spot Price", 
-                value = upper,
-                key=f"max_spot_price_input",
-                min_value=0,
-                max_value=10000
-                )     
+        # with col2:
+        #     st.session_state.max_spot_price = st.number_input(
+        #         "Max Spot Price", 
+        #         value = upper,
+        #         key=f"max_spot_price_input",
+        #         min_value=0,
+        #         max_value=10000
+        #         )     
 
         with st.spinner('loading data...'):
             spot_prices, lines = generate_chart_lines(

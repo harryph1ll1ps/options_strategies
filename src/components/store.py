@@ -10,8 +10,8 @@ def configure_store():
                                   'strike': 500, 
                                   'premium': 1}]
         
-    if 'asset_price' not in st.session_state:
-        st.session_state.asset_price = 500.0
+    if 'spot_price' not in st.session_state:
+        st.session_state.spot_price = 0.0
         
     # hide the payoff diagram section by default
     if 'show_payoff_diagram' not in st.session_state:
