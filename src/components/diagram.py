@@ -48,7 +48,7 @@ def create_diagram(spot_prices, all_leg_returns):
 
     # Zero line
     ax.axhline(0)
-    ax.set_xlabel("Underlying Price at Expiry")
+    ax.set_xlabel("Spot Price at Expiry")
     ax.set_ylabel("Profit / Loss")
     ax.set_title("Options Payoff Diagram")
     ax.legend()

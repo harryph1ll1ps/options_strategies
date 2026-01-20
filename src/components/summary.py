@@ -21,6 +21,23 @@ def build_context():
     return context
 
 
+def summary_ui(text: str):
+    with st.container():
+        st.markdown(
+            f"""
+            <div style="
+                background-color: #dadada;
+                color: #111827;
+                border-radius: 14px;
+                padding: 22px;
+            ">
+                {text}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
 def render_ai_summary():
     
     def _show_ai_summary():
@@ -34,7 +51,7 @@ def render_ai_summary():
         st.session_state.refresh_ai_summary = True
 
     st.markdown('---')
-    st.markdown('### More Tools')
+    st.markdown('### AI Summary')
 
     if st.session_state.show_ai_summary:
         col1, col2 = st.columns([0.25,0.75])
@@ -44,7 +61,7 @@ def render_ai_summary():
             st.button("Reload", on_click=_refresh_ai_summary, icon="🔄", key="ai_summary_refresh_button")
 
     else:
-        st.button("AI Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
+        st.button("Show Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
 
 
     if st.session_state.show_ai_summary and ((not st.session_state.previous_ai_summary) or st.session_state.refresh_ai_summary):
@@ -88,22 +105,8 @@ def render_ai_summary():
             st.session_state.refresh_ai_summary = False
 
 
-            with st.container():
-                st.markdown(
-                    f"""
-                    <div style="
-                        background-color: #dadada;
-                        color: #111827;
-                        border-radius: 14px;
-                        padding: 22px;
-                    ">
-                        {response}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )       
-            # st.markdown(response)
+            summary_ui(response)
 
 
     elif st.session_state.show_ai_summary and st.session_state.previous_ai_summary:
-        st.markdown(st.session_state.previous_ai_summary)
+        summary_ui(st.session_state.previous_ai_summary)

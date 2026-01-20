@@ -30,7 +30,7 @@ def call_openrouter(content: str):
         "Content-Type": "application/json",
     },
     data=json.dumps({
-        "model": "tngtech/deepseek-r1t2-chimera:free",
+        "model": "xiaomi/mimo-v2-flash:free",
         "messages": [
         {
             "role": "user",
