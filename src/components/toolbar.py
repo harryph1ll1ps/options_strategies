@@ -5,8 +5,8 @@ MIN_TRADES = 1
 
 def _handle_add_leg():
     if len(st.session_state.legs) < MAX_TRADES:
-        st.session_state.legs.append({'option_type': 'call', 
-                                    'direction': 'long', 
+        st.session_state.legs.append({'option_type': 'Call', 
+                                    'direction': 'Long', 
                                     'strike': 500, 
                                     'premium': 1})
     else:

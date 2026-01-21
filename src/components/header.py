@@ -6,7 +6,7 @@ def render_head():
         initial_sidebar_state="collapsed",
         page_icon="📈",
         menu_items={
-            'Report a bug': "https://github.com/your-username/options_strategies/issues",
+            'Report a bug': "https://github.com/harryph1ll1ps/options_strategies/issues/new",
             'About': "# Build an options trading strategy",
         }
     )

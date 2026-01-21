@@ -47,19 +47,35 @@ if __name__ == "__main__":
     print(os.getenv("OPENROUTER_API_KEY"))
 
     context = f"""
-    You are an experienced options trader and risk analyst.
+    You are a professional options trader and risk analyst.
+    Analyse the following option legs as a single, unified strategy, not as individual trades.
 
-    Given the following option legs, analyse the overall strategy as a single trade.
+    Output requirements:
+    Write in a professional but accessible tone, suitable for an informed retail or institutional trader
+    Be concise, high-level, and conceptual rather than numerically precise
+    Do not over-focus on exact strike prices or premiums; use them only to infer structure and payoff
+    Avoid unnecessary jargon or edge-case details
+    Structure your response exactly as follows (markdown, bold section headers):
 
-    For your response:
-    - Start with a 1-2 sentence plain-English summary of the trade
-    - Identify the strategy name if applicable (e.g. spread, straddle, condor)
-    - Describe the **maximum upside** and **maximum downside**
-    - Explain how the trade makes money and how it loses money
-    - Highlight key risks (e.g. directional risk, volatility risk, assignment risk)
-    - Mention any important assumptions you are making
-    - Be succinct, logical, and clear
-    - Return the response as markdown
+    Strategy Name:
+    Identify the commonly accepted strategy name (e.g. vertical spread, straddle, condor). If none clearly applies, write 'N/A'.
+
+    Overview:
+    One plain-English sentence explaining what the trade is trying to achieve and the market view it expresses.
+
+    Economics:
+    Explain how the trade makes money and how it loses money in general terms, including payoff shape and where gains or losses are capped.
+
+    Risks:
+    Describe the primary risks (e.g. directional risk, time decay, capped upside, volatility changes), focusing on what could go wrong.
+
+    Assumptions:
+    State the key assumptions required for the trade thesis to hold (e.g. price movement, volatility behaviour, liquidity, early exercise considerations).
+
+    Option legs:
+    List the option legs exactly as provided, without reinterpretation.
+
+    Here are the option legs to analyse:
 
     Option legs:
     Long call at strike price 100 with a premium of 10

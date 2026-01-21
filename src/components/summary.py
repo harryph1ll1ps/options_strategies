@@ -21,23 +21,6 @@ def build_context():
     return context
 
 
-def summary_ui(text: str):
-    with st.container():
-        st.markdown(
-            f"""
-            <div style="
-                background-color: #dadada;
-                color: #111827;
-                border-radius: 14px;
-                padding: 22px;
-            ">
-                {text}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-
 def render_ai_summary():
     
     def _show_ai_summary():
@@ -104,9 +87,10 @@ def render_ai_summary():
             st.session_state.previous_ai_summary = response
             st.session_state.refresh_ai_summary = False
 
-
-            summary_ui(response)
+            with st.expander("View Strategy Details", expanded=True):
+                st.markdown(response)
 
 
     elif st.session_state.show_ai_summary and st.session_state.previous_ai_summary:
-        summary_ui(st.session_state.previous_ai_summary)
+        with st.expander("View Strategy Details", expanded=True):
+            st.markdown(st.session_state.previous_ai_summary)

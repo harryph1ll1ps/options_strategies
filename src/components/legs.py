@@ -4,7 +4,8 @@ def render_legs():
     """ Render Option Leg Inputs """
     col1, col2, col3, col4 = st.columns([0.3,0.3,0.2,0.2])
 
-    for i, leg in enumerate(st.session_state['legs']):
+    legs = st.session_state['legs']
+    for i, leg in enumerate(legs):
         with col1:
             st.session_state['legs'][i]['option_type'] = st.selectbox(
                 f"Option Type {i+1}", 

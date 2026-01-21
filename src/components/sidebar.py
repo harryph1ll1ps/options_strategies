@@ -21,7 +21,7 @@ def sidebar_how_to_use():
     st.sidebar.markdown('---')
 
 def sidebar_faq():
-    st.sidebar.markdown("""## Frequently Asked Questions (FAQ's)""")
+    st.sidebar.markdown("""## Frequently Asked Questions (FAQs)""")
     st.sidebar.markdown('`What are options?`')
     st.sidebar.markdown("""
                         Options are financial contracts that work a lot like insurance.
