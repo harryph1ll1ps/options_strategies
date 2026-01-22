@@ -12,9 +12,9 @@ Options Trading Strategy Builder</a></h4>
 
 1. Add your trade legs
 
-   <img width="300" alt="image" src="https://github.com/user-attachments/assets/a73955b8-c88a-439b-9698-28e12f36556b" />
+   <img width="300" alt="image" src="https://github.com/user-attachments/assets/7af0d858-683d-4645-8a20-4de07009bd7d" />
 
-3. Payoff is automatically calculated at different spot prices
+3. Payoff is calculated at different spot prices
 
    <img width="300" alt="image" src="https://github.com/user-attachments/assets/052dad58-cc14-4c6a-8aa5-d95bc3785922" />
 
@@ -32,3 +32,4 @@ Options Trading Strategy Builder</a></h4>
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 Inspired by jl33-ai WAM calc
+
