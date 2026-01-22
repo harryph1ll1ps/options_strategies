@@ -1,6 +1,8 @@
 import streamlit as st
-from src.utils.llm import call_gemini, call_openrouter
+from src.utils.llm import call_openrouter
 import time
+
+COOLDOWN_SECONDS = 20
 
 def build_context():
     """ Build the trade context to pass into LLM"""
@@ -13,41 +15,48 @@ def build_context():
 
         option_type = leg["option_type"]
         direction = leg["direction"]
-        strike = leg["strike"]
-        premium = leg["premium"]
+        strike = float(leg["strike"])
+        premium = float(leg["premium"])
 
-        context = context + f"Trade {trade_no}: {direction} {option_type} trading at strike price of {strike}, with a premium of {premium}.\n"
+        context = context + f"Trade {trade_no}: {direction} {option_type} trading at strike price of {strike:.2f}, with a premium of {premium:.2f}.\n"
 
     return context
 
 
 def render_ai_summary():
-    
+
+    def _finished_cooldown():
+        now = time.time()
+        if now - st.session_state.prev_ai_call_timestamp < COOLDOWN_SECONDS:
+            st.toast("Please wait a few seconds before requesting another summary. ⏳")
+            return False
+        else:
+            return True
+
     def _show_ai_summary():
-        st.session_state.show_ai_summary = True
+        if _finished_cooldown():
+            st.session_state.show_ai_summary = True
 
     def _hide_ai_summary():
         st.session_state.show_ai_summary = False
-        st.session_state.previous_ai_summary = False
+        st.session_state.existing_summary = None
 
     def _refresh_ai_summary():
-        st.session_state.refresh_ai_summary = True
+        if _finished_cooldown():
+            st.session_state.existing_summary = None
 
     st.markdown('---')
     st.markdown('### AI Summary')
 
-    if st.session_state.show_ai_summary:
-        col1, col2 = st.columns([0.25,0.75])
-        with col1:
-            st.button("Close Summary", on_click=_hide_ai_summary, icon="❌", key="ai_summary_exit_button")
-        with col2:
-            st.button("Reload", on_click=_refresh_ai_summary, icon="🔄", key="ai_summary_refresh_button")
 
-    else:
+    if not st.session_state.show_ai_summary:
         st.button("Show Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
 
 
-    if st.session_state.show_ai_summary and ((not st.session_state.previous_ai_summary) or st.session_state.refresh_ai_summary):
+    # if the user has pressed on summary for the first time since closing or refreshed
+    if st.session_state.show_ai_summary and not st.session_state.existing_summary:
+        
+        # generate analysis
         with st.spinner('Generating analysis...'):
             trade_context = build_context()
             context = f"""
@@ -84,13 +93,20 @@ def render_ai_summary():
             """.strip()
 
             response = call_openrouter(context)
-            st.session_state.previous_ai_summary = response
-            st.session_state.refresh_ai_summary = False
+            st.session_state.existing_summary = response
+            st.session_state.prev_ai_call_timestamp = time.time()
+    
 
-            with st.expander("View Strategy Details", expanded=True):
-                st.markdown(response)
+    if st.session_state.show_ai_summary and st.session_state.existing_summary:
 
+        col1, col2 = st.columns([0.25,0.75])
+        with col1:
+            st.button("Close Summary", on_click=_hide_ai_summary, icon="❌", key="ai_summary_exit_button")
+        with col2:
+            st.button("Reload", on_click=_refresh_ai_summary, icon="🔄", key="ai_summary_refresh_button")
 
-    elif st.session_state.show_ai_summary and st.session_state.previous_ai_summary:
         with st.expander("View Strategy Details", expanded=True):
-            st.markdown(st.session_state.previous_ai_summary)
+            st.markdown(st.session_state.existing_summary)
+
+
+

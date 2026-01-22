@@ -35,10 +35,12 @@ def _get_range():
         old_range = old_max - old_min
         new_range = new_max - new_min
 
-        ratio = (old_spot - old_min) / old_range
-        ratio = max(0.0, min(1.0, ratio)) #safety
+        if old_range > 0:
+            ratio = (old_spot - old_min) / old_range
+        else:
+            ratio = 0.5 # handles case where old range = 0 (one leg)
 
-        st.session_state.spot_price = int(new_min + ratio * new_range)
+        st.session_state.spot_price = round(new_min + ratio * new_range, 2)
 
     # store current range for next rerun
     st.session_state.prev_min_spot_price = new_min
@@ -63,6 +65,6 @@ def render_slider():
     # display gross + net payoff
     payoff, net_payoff = calculate_legs_return(st.session_state.legs, st.session_state.spot_price)
 
-    st.markdown(f'**At a spot price of** `{st.session_state.spot_price}` ***gross payoff*** **at expiry is** `{payoff}`')
-    st.markdown(f'**At a spot price of** `{st.session_state.spot_price}` ***net payoff*** **at expiry is** `{net_payoff}`')
+    st.markdown(f'**At a spot price of** `{st.session_state.spot_price:.1f}` ***gross payoff*** **at expiry is** `{payoff:.1f}`')
+    st.markdown(f'**At a spot price of** `{st.session_state.spot_price:.1f}` ***net payoff*** **at expiry is** `{net_payoff:.1f}`')
     st.markdown("")

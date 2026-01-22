@@ -7,8 +7,8 @@ def _handle_add_leg():
     if len(st.session_state.legs) < MAX_TRADES:
         st.session_state.legs.append({'option_type': 'Call', 
                                     'direction': 'Long', 
-                                    'strike': 500, 
-                                    'premium': 1})
+                                    'strike': 500.0, 
+                                    'premium': 1.0})
     else:
         st.warning(f"You can only have up to {MAX_TRADES} trades.")
 

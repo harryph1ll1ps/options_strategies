@@ -2,11 +2,9 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from src.utils.calculation import calculate_leg_return
-import math
-
 
 def generate_chart_lines(legs: list[dict], min_price: int, max_price: int):
-    spot_prices = np.arange(min_price, max_price + 1)
+    spot_prices = np.arange(int(min_price), int(max_price) + 1)
 
     all_leg_returns = []
 
@@ -57,20 +55,6 @@ def create_diagram(spot_prices, all_leg_returns):
 
 
 def render_payoff_diagram():
-    # def _show_payoff_diagram():
-    #     st.session_state.show_payoff_diagram = True
-
-    # def _hide_payoff_diagram():
-    #     st.session_state.show_payoff_diagram = False
-
-    # st.markdown("")
-
-    # if not st.session_state.show_payoff_diagram:
-    #     st.button("Show Chart", on_click=_show_payoff_diagram, icon="📈", key="payoff_diagram_button")
-
-    # if st.session_state.show_payoff_diagram:
-    #     st.button("Close Chart", on_click=_hide_payoff_diagram, icon="❌", key="payoff_diagram_exit_button")
-
     with st.spinner('loading data...'):
         spot_prices, lines = generate_chart_lines(
             legs=st.session_state.legs,

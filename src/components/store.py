@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 
 BASE_STRIKE = 500
 BASE_PREMIUM = 1
@@ -40,8 +41,8 @@ def configure_store():
     if 'show_ai_summary' not in st.session_state:
         st.session_state.show_ai_summary = False
 
-    if 'previous_ai_summary' not in st.session_state:
-        st.session_state.previous_ai_summary = False
+    if 'existing_summary' not in st.session_state:
+        st.session_state.existing_summary = None
     
-    if 'refresh_ai_summary' not in st.session_state:
-        st.session_state.refresh_ai_summary = False
+    if 'prev_ai_call_timestamp' not in st.session_state:
+        st.session_state.prev_ai_call_timestamp = time.time() - 60

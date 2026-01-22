@@ -1,10 +1,10 @@
-def calculate_leg_return(leg: dict, asset_price):
+def calculate_leg_return(leg: dict, asset_price: float):
     """Calculate payoff for a single leg"""
 
     option_type = leg["option_type"]
     direction = leg["direction"]
-    strike = leg["strike"]
-    premium = leg["premium"]
+    strike = float(leg["strike"])
+    premium = float(leg["premium"])
 
     # intrinsic value (call vs put)
     if option_type == "Call":
@@ -23,7 +23,7 @@ def calculate_leg_return(leg: dict, asset_price):
     return payoff, net_payoff
 
 
-def calculate_legs_return(legs: list[dict], asset_price):
+def calculate_legs_return(legs: list[dict], asset_price: float):
     """Calculate payoff for all legs"""
 
     total_payoff = 0.0

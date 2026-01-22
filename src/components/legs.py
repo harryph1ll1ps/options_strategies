@@ -25,18 +25,20 @@ def render_legs():
         with col3:
             st.session_state['legs'][i]['strike'] = st.number_input(
                 "Strike Price", 
-                value = leg["strike"],
+                value = float(leg["strike"]),
                 key=f"strike_{i}",
-                min_value=0,
-                max_value=10000
+                step = 0.5,
+                min_value=0.0,
+                max_value=10000.0
                 )
             
         with col4:
             st.session_state['legs'][i]['premium'] = st.number_input(
                 "Premium", 
-                value = leg["premium"],
+                value = float(leg["premium"]),
                 key=f"premium_{i}",
-                min_value=0,
-                max_value=10000
+                step = 0.5,
+                min_value=0.0,
+                max_value=10000.0
                 )
 
