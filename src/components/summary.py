@@ -47,6 +47,7 @@ def render_ai_summary():
 
     st.markdown('---')
     st.markdown('### AI Summary')
+    st.markdown('_AI interpretation can make mistakes_')
 
 
     if not st.session_state.show_ai_summary:
@@ -92,9 +93,15 @@ def render_ai_summary():
             {trade_context}
             """.strip()
 
-            response = call_openrouter(context)
-            st.session_state.existing_summary = response
-            st.session_state.prev_ai_call_timestamp = time.time()
+            try:
+                response = call_openrouter(context)
+                st.session_state.existing_summary = response
+                st.session_state.prev_ai_call_timestamp = time.time()
+
+            except Exception:
+                st.toast("AI summary is temporarily unavailable. Please try again later.")
+
+
     
 
     if st.session_state.show_ai_summary and st.session_state.existing_summary:

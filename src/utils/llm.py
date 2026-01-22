@@ -1,32 +1,18 @@
 import os
-from dotenv import load_dotenv
-import google.genai as genai
 import requests
 import json
 
-load_dotenv()  # used to get API key
-
-def call_gemini(content: str):
-    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=content,
-        # config=genai.types.GenerateContentConfig(
-        #     temperature=0.2,
-        #     top_p=0.9,
-        #     max_output_tokens=600,
-        # ),
-    )
-
-    return response.text
-
-
 def call_openrouter(content: str):
+
+    key = os.getenv('OPENROUTER_API_KEY')
+
+    if not key:
+        raise RuntimeError("API Key Not Found")
+
     response = requests.post(
     url="https://openrouter.ai/api/v1/chat/completions",
     headers={
-        "Authorization": f"Bearer {os.getenv('OPENROUTER_API_KEY')}",
+        "Authorization": f"Bearer {key}",
         "Content-Type": "application/json",
     },
     data=json.dumps({
@@ -37,10 +23,41 @@ def call_openrouter(content: str):
             "content": f"{content}"
         }
         ]
-    })
+    }),
+    timeout=20
     )
 
-    return response.json()["choices"][0]["message"]["content"]
+    if response.status_code != 200:
+        raise RuntimeError(f"OpenRouter error {response.status_code}: {response.text}")
+    
+    try:
+        data = response.json()
+    except ValueError:
+        raise RuntimeError("Invalid JSON response from OpenRouter")
+
+    return data["choices"][0]["message"]["content"]
+
+
+
+
+#import google.genai as genai
+# def call_gemini(content: str):
+#     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+#     response = client.models.generate_content(
+#         model="gemini-3-flash-preview",
+#         contents=content,
+#         # config=genai.types.GenerateContentConfig(
+#         #     temperature=0.2,
+#         #     top_p=0.9,
+#         #     max_output_tokens=600,
+#         # ),
+#     )
+
+#     return response.text
+
+
+
 
 
 if __name__ == "__main__":
