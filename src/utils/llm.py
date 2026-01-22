@@ -1,10 +1,11 @@
 import os
 import requests
 import json
+import streamlit as st
 
 def call_openrouter(content: str):
 
-    key = os.getenv('OPENROUTER_API_KEY')
+    key = st.secrets.get("OPENROUTER_API_KEY") or os.getenv("OPENROUTER_API_KEY")
 
     if not key:
         raise RuntimeError("API Key Not Found")
