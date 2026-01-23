@@ -40,7 +40,7 @@ def create_diagram(spot_prices, all_leg_returns):
         spot_prices,
         strategy_returns,
         color="black",
-        linewidth=3,
+        linewidth=2.5,
         label="Strategy",
     )
 
