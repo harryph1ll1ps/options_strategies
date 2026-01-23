@@ -55,7 +55,7 @@ def create_diagram(spot_prices, all_leg_returns):
 
 
 def render_payoff_diagram():
-    with st.spinner('loading data...'):
+    with st.spinner('Building payoff diagram...'):
         
         spot_prices, lines = generate_chart_lines(
             legs=st.session_state.legs,

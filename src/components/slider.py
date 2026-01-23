@@ -12,8 +12,8 @@ def _get_range():
     lower = min(strikes) * 0.9
     upper = max(strikes) * 1.1
 
-    new_min = lower - (lower % 50)
-    new_max = upper + (50 - (upper % 50))
+    new_min = lower - (lower % 100)
+    new_max = upper + (100 - (upper % 100))
 
     # store old bounds
     old_min = st.session_state.prev_min_spot_price
