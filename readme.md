@@ -2,11 +2,11 @@
 options-strategies
 </h1>
 
-<h4 align="center"><a href="https://www.google.com" target="_blank">
+<h4 align="center"><a href="[https://www.google.com](https://options-payoff-diagram.streamlit.app/)" target="_blank">
 Options Trading Strategy Builder</a></h4>
 
 
-[Visit the site](https://www.google.com)
+[Visit the site]([https://www.google.com](https://options-payoff-diagram.streamlit.app/))
 
 ### How it works
 
