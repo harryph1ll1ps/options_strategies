@@ -1,5 +1,5 @@
 import streamlit as st
-from src.utils.llm import call_openrouter
+from src.utils.llm import call_gemini
 import time
 
 COOLDOWN_SECONDS = 20
@@ -94,7 +94,7 @@ def render_ai_summary():
             """.strip()
 
             try:
-                response = call_openrouter(context)
+                response = call_gemini(context)
                 st.session_state.existing_summary = response
                 st.session_state.prev_ai_call_timestamp = time.time()
 
