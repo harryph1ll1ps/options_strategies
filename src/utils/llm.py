@@ -1,68 +1,33 @@
 import os
-import requests
-import json
 import streamlit as st
+import google.genai as genai
+from dotenv import load_dotenv
 
-def call_openrouter(content: str):
+# load_dotenv()  # loads the .env file - USE THIS WHEN TESTING
 
-    key = st.secrets.get("OPENROUTER_API_KEY") or os.getenv("OPENROUTER_API_KEY")
+
+def call_gemini(prompt: str):
+
+    key = st.secrets.get("GEMINI_API_KEY")
+    # key =  os.getenv("GEMINI_API_KEY") # USE THIS WHEN TESTING
 
     if not key:
         raise RuntimeError("API Key Not Found")
 
-    response = requests.post(
-    url="https://openrouter.ai/api/v1/chat/completions",
-    headers={
-        "Authorization": f"Bearer {key}",
-        "Content-Type": "application/json",
-    },
-    data=json.dumps({
-        "model": "xiaomi/mimo-v2-flash:free",
-        "messages": [
-        {
-            "role": "user",
-            "content": f"{content}"
-        }
-        ]
-    }),
-    timeout=20
+    client = genai.Client(api_key = key)
+
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=prompt,
     )
 
-    if response.status_code != 200:
-        raise RuntimeError(f"OpenRouter error {response.status_code}: {response.text}")
-    
-    try:
-        data = response.json()
-    except ValueError:
-        raise RuntimeError("Invalid JSON response from OpenRouter")
-
-    return data["choices"][0]["message"]["content"]
-
-
-
-
-#import google.genai as genai
-# def call_gemini(content: str):
-#     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-
-#     response = client.models.generate_content(
-#         model="gemini-3-flash-preview",
-#         contents=content,
-#         # config=genai.types.GenerateContentConfig(
-#         #     temperature=0.2,
-#         #     top_p=0.9,
-#         #     max_output_tokens=600,
-#         # ),
-#     )
-
-#     return response.text
+    return response.text
 
 
 
 
 
 if __name__ == "__main__":
-    print(os.getenv("OPENROUTER_API_KEY"))
 
     context = f"""
     You are a professional options trader and risk analyst.
@@ -100,9 +65,44 @@ if __name__ == "__main__":
     Short call at a strike price 150 with a premium of 5
     """.strip()
 
-    print(call_openrouter(context))
+    print(call_gemini(context))
 
 
 
 
+
+# def call_openrouter(content: str):
+
+#     key = st.secrets.get("OPENROUTER_API_KEY") or os.getenv("OPENROUTER_API_KEY")
+
+#     if not key:
+#         raise RuntimeError("API Key Not Found")
+
+#     response = requests.post(
+#     url="https://openrouter.ai/api/v1/chat/completions",
+#     headers={
+#         "Authorization": f"Bearer {key}",
+#         "Content-Type": "application/json",
+#     },
+#     data=json.dumps({
+#         "model": "xiaomi/mimo-v2-flash:free",
+#         "messages": [
+#         {
+#             "role": "user",
+#             "content": f"{content}"
+#         }
+#         ]
+#     }),
+#     timeout=20
+#     )
+
+#     if response.status_code != 200:
+#         raise RuntimeError(f"OpenRouter error {response.status_code}: {response.text}")
+    
+#     try:
+#         data = response.json()
+#     except ValueError:
+#         raise RuntimeError("Invalid JSON response from OpenRouter")
+
+#     return data["choices"][0]["message"]["content"]
 
