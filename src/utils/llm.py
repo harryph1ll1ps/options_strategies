@@ -3,13 +3,13 @@ import streamlit as st
 import google.genai as genai
 from dotenv import load_dotenv
 
-# load_dotenv()  # loads the .env file - USE THIS WHEN TESTING
+#load_dotenv()  # loads the .env file - USE THIS WHEN TESTING
 
 
 def call_gemini(prompt: str):
 
     key = st.secrets.get("GEMINI_API_KEY")
-    # key =  os.getenv("GEMINI_API_KEY") # USE THIS WHEN TESTING
+    #key =  os.getenv("GEMINI_API_KEY") # USE THIS WHEN TESTING
 
     if not key:
         raise RuntimeError("API Key Not Found")

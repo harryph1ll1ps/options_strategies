@@ -99,7 +99,10 @@ def render_ai_summary():
                 st.session_state.prev_ai_call_timestamp = time.time()
 
             except Exception:
+                st.session_state.show_ai_summary = False
                 st.toast("AI summary is temporarily unavailable. Please try again later.")
+                st.button("Show Summary", on_click=_show_ai_summary, icon="🧠", key="summary_button")
+
 
 
     
